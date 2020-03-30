@@ -67,11 +67,13 @@ class Admin extends CI_Basic_Api_Controller {
 					// Password Change
 					$struks = get_instance()->input->post('struk');
 					foreach ($struks as $s) {
-						$s['transaksi_id'] = $data['transaksi_id'];
+						$s['transaksi_id'] = $id;
 						$this->db->insert('struk', $s);
+						$struk_qty = get_instance()->db->escape($s['struk_qty']);
+						$barang_id = get_instance()->db->escape($s['barang_id']);
 						$this->db->query("UPDATE barang SET barang.barang_sisa_stok = barang.barang_sisa_stok - ".
-							"{$get_instance()->db->escape($s['struk_qty'])} WHERE barang.barang_id = ".
-							"{$get_instance()->db->escape($s['barang_id'])};");
+							"{$struk_qty} WHERE barang.barang_id = ".
+							"{$barang_id}");
 					}
 				}
 			}

@@ -8,7 +8,7 @@ function set_cors_headers() {
 	$frontUrl =  get_instance()->config->item('front_url');
 	if ($frontUrl) {
 		header('Access-Control-Allow-Origin: '.$frontUrl);
-		header('Access-Control-Allow-Headers: X-Requested-With, Authorization');
+		header('Access-Control-Allow-Headers: X-Requested-With, Authorization, Content-Type');
 		header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
 		header('Access-Control-Max-Age: 86400');
 		header('Vary: Origin');
@@ -21,6 +21,7 @@ function set_cors_headers() {
 function run_validation($config = []) {
 	$ci = &get_instance();
 	if (REQUEST_METHOD !== POST) load_error('Action require POST method');
+	if (count($config) === 0) return true;
 	$ci->load->library('form_validation');
 	foreach ($config as $conf) {
 		if (count($conf) >= 3 AND $conf[2]) {

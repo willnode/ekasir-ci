@@ -26,13 +26,14 @@ CREATE TABLE IF NOT EXISTS `barang` (
   `barang_sisa_stok` int(11) DEFAULT NULL,
   PRIMARY KEY (`barang_id`),
   UNIQUE KEY `barang_kode` (`barang_kode`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table dbkasir.barang: ~1 rows (approximately)
+-- Dumping data for table dbkasir.barang: ~2 rows (approximately)
 DELETE FROM `barang`;
 /*!40000 ALTER TABLE `barang` DISABLE KEYS */;
 INSERT INTO `barang` (`barang_id`, `barang_nama`, `barang_kode`, `barang_harga_beli`, `barang_harga_jual`, `barang_sisa_stok`) VALUES
-	(1, 'Fanta', '123', 3000, 3500, 10);
+	(1, 'Fanta', '123', 3000, 3500, 20),
+	(2, 'Coca-Cola', '321', 4000, 4500, 20);
 /*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 
 -- Dumping structure for table dbkasir.login
@@ -47,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table dbkasir.login: ~1 rows (approximately)
+-- Dumping data for table dbkasir.login: ~0 rows (approximately)
 DELETE FROM `login`;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
 INSERT INTO `login` (`login_id`, `username`, `password`, `name`, `avatar`, `role`) VALUES
@@ -67,18 +68,24 @@ CREATE TABLE IF NOT EXISTS `struk` (
 -- Dumping data for table dbkasir.struk: ~0 rows (approximately)
 DELETE FROM `struk`;
 /*!40000 ALTER TABLE `struk` DISABLE KEYS */;
+INSERT INTO `struk` (`barang_id`, `transaksi_id`, `struk_qty`, `struk_harga_barang`) VALUES
+	(1, 2, 1, 3500),
+	(2, 2, 2, 4500);
 /*!40000 ALTER TABLE `struk` ENABLE KEYS */;
 
 -- Dumping structure for table dbkasir.transaksi
 CREATE TABLE IF NOT EXISTS `transaksi` (
-  `transaksi_id` int(11) DEFAULT NULL,
+  `transaksi_id` int(11) NOT NULL AUTO_INCREMENT,
   `transaksi_waktu` timestamp NOT NULL DEFAULT current_timestamp(),
-  `transaksi_total` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `transaksi_total` int(11) NOT NULL,
+  PRIMARY KEY (`transaksi_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table dbkasir.transaksi: ~0 rows (approximately)
 DELETE FROM `transaksi`;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
+INSERT INTO `transaksi` (`transaksi_id`, `transaksi_waktu`, `transaksi_total`) VALUES
+	(2, '2020-03-30 21:33:47', 12500);
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
