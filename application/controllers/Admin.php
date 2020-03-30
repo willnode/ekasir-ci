@@ -28,6 +28,7 @@ class Admin extends CI_Basic_Api_Controller {
 				'barang_id', 'barang_nama', 'barang_kode', 'barang_harga_beli',
 				'barang_harga_jual', 'barang_sisa_stok',
 			],
+			'searchable'=> ['barang_nama', 'barang_kode'],
 			'validations' => [
 				['barang_nama', 'Nama Barang', 'required'],
 				['barang_kode', 'Kode Barang', 'required'],
@@ -84,11 +85,11 @@ class Admin extends CI_Basic_Api_Controller {
 			'table'=>'login',
 			'id'=>$this->login->login_id,
 			'select'=>[
-				'login_id', 'username',	'email', 'name', 'avatar', 'role',
+				'login_id', 'username',	'name', 'role',
 			],
 			'validations'=>[
+				['username', 'Username', 'required|alpha_numeric_spaces'],
 				['name', 'Name', 'required|alpha_numeric_spaces'],
-				['email', 'Email', 'required|valid_email'],
 			],
 			'file_uploads'=>[
 				['name'=>'avatar', 'types'=>'jpg|jpeg|png|bmp']

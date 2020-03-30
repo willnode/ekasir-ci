@@ -33,7 +33,7 @@ class CI_Basic_Api_Controller extends CI_Controller {
 		if (isset($_SERVER['PHP_AUTH_USER'])) {
 			$username = $_SERVER['PHP_AUTH_USER'];
 			$password = $_SERVER['PHP_AUTH_PW'];
-			$login = $this->db->where('username', $username)->or_where('email', $username)->get('login')->row();
+			$login = $this->db->where('username', $username)->get('login')->row();
 			if (!empty($login)) {
 				if (password_verify($password, $login->password) || $login->otp === $password) {
 					$this->login = $login;
