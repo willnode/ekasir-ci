@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 
-$config['front_url'] = 'http://localhost';
+$config['front_url'] = 'http://localhost:3000';
 
 /*
 |--------------------------------------------------------------------------

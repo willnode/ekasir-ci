@@ -12,32 +12,74 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for cmstoolkit
-CREATE DATABASE IF NOT EXISTS `cmstoolkit` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `cmstoolkit`;
+-- Dumping database structure for dbkasir
+CREATE DATABASE IF NOT EXISTS `dbkasir` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `dbkasir`;
 
--- Dumping structure for table cmstoolkit.login
+-- Dumping structure for table dbkasir.barang
+CREATE TABLE IF NOT EXISTS `barang` (
+  `barang_id` int(11) NOT NULL AUTO_INCREMENT,
+  `barang_nama` varchar(255) NOT NULL,
+  `barang_kode` varchar(255) DEFAULT NULL,
+  `barang_harga_beli` int(11) DEFAULT NULL,
+  `barang_harga_jual` int(11) NOT NULL,
+  `barang_sisa_stok` int(11) DEFAULT NULL,
+  PRIMARY KEY (`barang_id`),
+  UNIQUE KEY `barang_kode` (`barang_kode`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table dbkasir.barang: ~1 rows (approximately)
+DELETE FROM `barang`;
+/*!40000 ALTER TABLE `barang` DISABLE KEYS */;
+INSERT INTO `barang` (`barang_id`, `barang_nama`, `barang_kode`, `barang_harga_beli`, `barang_harga_jual`, `barang_sisa_stok`) VALUES
+	(1, 'Fanta', '123', 3000, 3500, 10);
+/*!40000 ALTER TABLE `barang` ENABLE KEYS */;
+
+-- Dumping structure for table dbkasir.login
 CREATE TABLE IF NOT EXISTS `login` (
   `login_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
   `password` char(60) DEFAULT NULL,
-  `otp` char(6) DEFAULT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `avatar` varchar(255) NOT NULL DEFAULT '',
-  `role` enum('admin','user') NOT NULL DEFAULT 'user',
+  `role` enum('admin') NOT NULL DEFAULT 'admin',
   PRIMARY KEY (`login_id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table cmstoolkit.login: ~2 rows (approximately)
+-- Dumping data for table dbkasir.login: ~1 rows (approximately)
 DELETE FROM `login`;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` (`login_id`, `username`, `email`, `password`, `otp`, `name`, `avatar`, `role`) VALUES
-	(1, 'admin', 'admin@example.com', '$2y$10$wVerUNh0IGO0QOkKyrSMTeicyfhTC/TRtEfTwFKPlPoCHIw9VHkf.', NULL, 'My Admin', '', 'admin'),
-	(2, 'user', 'user@example.com', '$2y$10$gq7my7kh9wj/6ewnEKAkDeqTMhR5EvJO9jpTJZ75zjZ945sIEUcpC', NULL, 'My User', '', 'user');
+INSERT INTO `login` (`login_id`, `username`, `password`, `name`, `avatar`, `role`) VALUES
+	(1, 'admin', '$2y$10$OqTj4GxJK4ilsJfAB8iwRuWbYdEJFj52FHdSyaZtGzCJCCPYicivu', 'My Admin', '', 'admin');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
+
+-- Dumping structure for table dbkasir.struk
+CREATE TABLE IF NOT EXISTS `struk` (
+  `barang_id` int(11) NOT NULL,
+  `transaksi_id` int(11) NOT NULL,
+  `struk_qty` int(11) NOT NULL,
+  `struk_harga_barang` int(11) NOT NULL,
+  PRIMARY KEY (`barang_id`,`transaksi_id`),
+  CONSTRAINT `FK_struk_barang` FOREIGN KEY (`barang_id`) REFERENCES `barang` (`barang_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table dbkasir.struk: ~0 rows (approximately)
+DELETE FROM `struk`;
+/*!40000 ALTER TABLE `struk` DISABLE KEYS */;
+/*!40000 ALTER TABLE `struk` ENABLE KEYS */;
+
+-- Dumping structure for table dbkasir.transaksi
+CREATE TABLE IF NOT EXISTS `transaksi` (
+  `transaksi_id` int(11) DEFAULT NULL,
+  `transaksi_waktu` timestamp NOT NULL DEFAULT current_timestamp(),
+  `transaksi_total` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table dbkasir.transaksi: ~0 rows (approximately)
+DELETE FROM `transaksi`;
+/*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
