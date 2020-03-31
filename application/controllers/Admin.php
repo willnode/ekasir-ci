@@ -53,16 +53,17 @@ class Admin extends CI_Basic_Api_Controller {
 				'neto' => [],
 			];
 			for ($i=0; $i < $count; $i++) {
-				get_instance()->db->where('transaksi_waktu <', date('Y-m-d', strtotime($i.' '.$unit.' ago')));
-				get_instance()->db->where('transaksi_waktu >=', date('Y-m-d', strtotime(($i+1).' '.$unit.' ago')));
+				get_instance()->db->where('transaksi_waktu <', date('Y-m-d', strtotime(($i-1).' '.$unit.' ago')));
+				get_instance()->db->where('transaksi_waktu >=', date('Y-m-d', strtotime(($i).' '.$unit.' ago')));
 				$result = $this->db->get('transaksi')->result();
-				$bruto = 0; $neto = 0;
+				$bruto = 0; $neto = 0; $transaksi = 0;
 				foreach ($result as $row) {
+					$transaksi ++;
 					$bruto += $row->transaksi_total;
 					$neto += $row->transaksi_total - $row->transaksi_modal;
 				}
 				$data['tanggal'][] = date('Y-m-d', strtotime($i.' '.$unit.' ago'));
-				$data['transaksi'][] = count($result);
+				$data['transaksi'][] = $transaksi;
 				$data['bruto'][] = $bruto;
 				$data['neto'][] = $neto;
 				# code...
