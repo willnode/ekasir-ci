@@ -337,12 +337,13 @@ function master_crud($attr) {
 	$field_key = isset($attr['field_key']) ? $attr['field_key'] : $table.'_id';
 	$method =  isset($attr['method']) ? $attr['method'] : REQUEST_METHOD;
 	$select = isset($attr['select']) ? $attr['select'] : '*';
-	$filter = isset($attr['filter']) ? $attr['filter'] : [];
+	$filter = isset($attr['filter']) ? $attr['filter'] : []; // The filter MAY contain joined colums
+	$joins = isset($attr['joins']) AND is_callable($attr['joins']) AND $attr['joins'];
 	if ($row_id === NULL) {
 		if ($method === GET) {
 			$searchable = isset($attr['searchable']) ? $attr['searchable'] : [];
 			// Traverse table
-			isset($attr['joins']) AND is_callable($attr['joins']) AND $attr['joins']();
+			$joins AND $joins();
 			load_ok(ajax_table_driver($table, $filter, $searchable, $select));
 		}
 		if ($method === POST) {
@@ -363,10 +364,11 @@ function master_crud($attr) {
 				]);
 			} else {
 				// Get row resource
+				$joins AND $joins();
 				get_instance()->db->where($filter);
-				load_ok([
-					'data' => get_values_at($table, $row_id, 'load_404', $field_key, $select)
-				]);
+				$data = get_values_at($table, $row_id, 'load_404', $field_key, $select);
+				isset($attr['after_single_read']) AND is_callable($attr['after_single_read']) AND $attr['after_single_read']($data);
+				load_ok([ 'data' => $data, ]);
 			}
 		} else if ($method === POST || $method === PUT) {
 			$validations = isset($attr['validations']) ? $attr['validations'] : [];

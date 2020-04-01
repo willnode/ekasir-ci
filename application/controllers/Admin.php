@@ -81,8 +81,14 @@ class Admin extends CI_Basic_Api_Controller {
 			'table' => 'transaksi',
 			'id' => $id,
 			'select' => [
-				'transaksi_id', 'transaksi_waktu', 'transaksi_modal', 'transaksi_total',
+				'transaksi_id', 'transaksi_waktu', 'transaksi_modal', 'transaksi_total', 'transaksi_uang'
 			],
+			'validations' => [
+				['transaksi_uang', 'Uang', 'required'],
+			],
+			'after_single_read'=>function(&$data) {
+				$data->struk = get_instance()->db->join('barang', 'barang.barang_id = struk.barang_id', 'left')->get_where('struk', ['transaksi_id' => $data->transaksi_id])->result();
+			},
 			'before_update'=>function($id, &$data, $existing) {
 				if ($existing == NULL) {
 					$struks = get_instance()->input->post('struk');
@@ -104,9 +110,9 @@ class Admin extends CI_Basic_Api_Controller {
 					foreach ($struks as $s) {
 						$s['transaksi_id'] = $id;
 						$this->db->insert('struk', $s);
-						$struk_qty = get_instance()->db->escape($s['struk_qty']);
-						$barang_id = get_instance()->db->escape($s['barang_id']);
 						// Skip stok
+						// $struk_qty = get_instance()->db->escape($s['struk_qty']);
+						// $barang_id = get_instance()->db->escape($s['barang_id']);
 						// $this->db->query("UPDATE barang SET barang.barang_sisa_stok = barang.barang_sisa_stok - ".
 						// 	"{$struk_qty} WHERE barang.barang_id = ".
 						// 	"{$barang_id}");
