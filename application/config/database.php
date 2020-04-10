@@ -74,13 +74,11 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'hostname' => 'localhost',
-	// 'hostname' => 'dbkasir',
-	'username' => 'root',
+	'hostname' => 'dbkasir',
+	'username' => 'dbkasir',
 	'password' => '',
 	'database' => 'dbkasir',
-	'dbdriver' => 'mysqli',
-	// 'dbdriver' => 'odbc',
+	'dbdriver' => 'odbc',
 	'dbprefix' => 'ekasir_',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
